@@ -12,4 +12,13 @@ class PdfDeliveryTest < ActionDispatch::IntegrationTest
     assert_equal "application/pdf", headers["Content-Type"]
   end
 
+  test "pdf renderes a required template" do
+    get templated_path(format: :pdf)
+
+    assert_match "PDF", response.body
+    assert_match "binary", headers["Content-Transfer-Encoding"]
+
+    assert_equal "attachment; filename=\"contents.pdf\"", headers["Content-Disposition"]
+    assert_equal "application/pdf", headers["Content-Type"]    
+  end
 end
